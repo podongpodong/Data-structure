@@ -2,48 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include<ctype.h>
-
-#define TRUE 1
-#define FALSE 0
-#define Debug
-
-typedef struct _node{
-    char data;
-    struct _node *next;
-}Node;
-
-typedef struct Liststack{
-    Node *head;
-    Node *cur;
-}Lstack;
-
-void StackInit(Lstack *stack);
-void Push(Lstack *stack, char data);
-char Pop(Lstack *stack);
-int Empty(Lstack *stack);
-char Peek(Lstack *stack);
-
-int GetPrecOp(char tok); //연산자의 우선순위 값반환
-int WhoPrecOP(char op1, char op2); //연산자의 우선순위 비교
-void GetConvExp(char exp[]);
-
-int main()
-{
-    char exp1[] = "1+2*3";
-    char exp2[] = "(1+2)*3";
-    char exp3[] = "((1-2)+3)*(5-2)";
-
-    //GetConvExp(exp1);
-    //printf("%s\n", exp1);
-
-    //GetConvExp(exp2);
-    //printf("%s\n", exp2);
-    
-    GetConvExp(exp3);
-    printf("%s\n", exp3);
-
-    return 0;
-}
+#include "curculater.h"
 
 void GetConvExp(char exp[])
 {
@@ -82,6 +41,7 @@ void GetConvExp(char exp[])
                         if(popOp == '(') break;
                         convexp[idx++] = popOp;
                     }
+                    break;
                 case '*':
                 case '/':
                 case '+':
@@ -123,8 +83,6 @@ int GetPrecOp(char tok)
     return -1;
 }
 
-// 1*2+3 12*3+
-
 int WhoPrecOP(char op1, char op2)
 {
 
@@ -151,7 +109,7 @@ int Empty(Lstack *stack)
     else return FALSE;
 }
 
-char Peek(Lstack *stack) //스택이 비는 경우는 생각X
+char Peek(Lstack *stack) //스택이 비는 경우는 생각X -> Empty함수로 검사
 {
 
     #ifdef Debug
